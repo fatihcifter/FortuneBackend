@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FortuneTellerApi.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class FortuneTellersController : ControllerBase
@@ -26,22 +25,43 @@ namespace FortuneTellerApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FortuneTeller>>> GetFortuneTellers()
         {
-          if (_context.FortuneTellers == null)
-          {
-              return NotFound();
-          }
+           
             return await _context.FortuneTellers.ToListAsync();
         }
+        [AllowAnonymous]
+        [HttpGet("~/GetFortuneTellersByFortuneType")]
+        public async Task<ActionResult<IEnumerable<FortuneTeller>>> GetFortuneTellersByFortuneType(FortuneType fortuneType)
+        {
+            try { 
+            if (_context.FortuneTellers == null)
+            {
+                return NotFound();
+            }
+            switch ((int)fortuneType)
+            {
+                case 1:
+                    return await _context.FortuneTellers.AsQueryable().Where(x => x.Coffee == true).ToListAsync();
+                case 21:
+                    return await _context.FortuneTellers.AsQueryable().Where(x => x.Tarot == true).ToListAsync();
+                case 3:
+                    return await _context.FortuneTellers.AsQueryable().Where(x => x.Water == true).ToListAsync();
+                case 4:
+                    return await _context.FortuneTellers.AsQueryable().Where(x => x.Birthmap == true).ToListAsync();
+                case 5:
+                    return await _context.FortuneTellers.AsQueryable().Where(x => x.PlayingCard == true).ToListAsync();
 
+            }
+            return await _context.FortuneTellers.ToListAsync();
+            }catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
         // GET: api/FortuneTellers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<FortuneTeller>> GetFortuneTeller(int userId)
+        public async Task<ActionResult<FortuneTeller>> GetFortuneTeller(int id)
         {
-          if (_context.FortuneTellers == null)
-          {
-              return NotFound();
-          }
-            var fortuneTeller =  _context.FortuneTellers?.FirstOrDefault(e => e.UserId == userId);
+            var fortuneTeller = await _context.FortuneTellers.FindAsync(id);
 
             if (fortuneTeller == null)
             {
@@ -85,26 +105,18 @@ namespace FortuneTellerApi.Controllers
         // POST: api/FortuneTellers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<FortuneTeller>> AddFortuneTeller(FortuneTeller fortuneTeller)
+        public async Task<ActionResult<FortuneTeller>> PostFortuneTeller(FortuneTeller fortuneTeller)
         {
-          if (_context.FortuneTellers == null)
-          {
-              return Problem("Entity set 'APIDbContext.FortuneTellers'  is null.");
-          }
             _context.FortuneTellers.Add(fortuneTeller);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetFortuneTeller", new { UserId = fortuneTeller.UserId }, fortuneTeller);
+            return CreatedAtAction("GetFortuneTeller", new { id = fortuneTeller.Id }, fortuneTeller);
         }
 
         // DELETE: api/FortuneTellers/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFortuneTeller(int id)
         {
-            if (_context.FortuneTellers == null)
-            {
-                return NotFound();
-            }
             var fortuneTeller = await _context.FortuneTellers.FindAsync(id);
             if (fortuneTeller == null)
             {
@@ -117,9 +129,11 @@ namespace FortuneTellerApi.Controllers
             return NoContent();
         }
 
-        private bool FortuneTellerExists(int userId)
+        private bool FortuneTellerExists(int id)
         {
-            return (_context.FortuneTellers?.Any(e => e.UserId == userId)).GetValueOrDefault();
+            return _context.FortuneTellers.Any(e => e.Id == id);
         }
+
+      
     }
 }

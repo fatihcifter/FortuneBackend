@@ -17,7 +17,7 @@ namespace FortuneTellerApi.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -50,6 +50,86 @@ namespace FortuneTellerApi.Migrations
                     b.ToTable("DailyMessages");
                 });
 
+            modelBuilder.Entity("FortuneTellerApi.Models.FortuneDetail", b =>
+                {
+                    b.Property<int>("FortuneId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FortuneId"));
+
+                    b.Property<string>("FortuneInformation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FortuneId");
+
+                    b.ToTable("FortuneDetails");
+                });
+
+            modelBuilder.Entity("FortuneTellerApi.Models.FortuneImageInfo", b =>
+                {
+                    b.Property<int>("ImageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageId"));
+
+                    b.Property<int>("FortuneId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("ImageId");
+
+                    b.ToTable("FortuneImageInfos");
+                });
+
+            modelBuilder.Entity("FortuneTellerApi.Models.FortuneInfo", b =>
+                {
+                    b.Property<int>("FortuneId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FortuneId"));
+
+                    b.Property<string>("FortuneTellerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPayed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FortuneId");
+
+                    b.ToTable("FortuneInfos");
+                });
+
+            modelBuilder.Entity("FortuneTellerApi.Models.FortunePrice", b =>
+                {
+                    b.Property<int>("PriceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PriceId"));
+
+                    b.Property<int>("FortuneType")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TurkishPrice")
+                        .HasColumnType("float");
+
+                    b.HasKey("PriceId");
+
+                    b.ToTable("FortunePrices");
+                });
+
             modelBuilder.Entity("FortuneTellerApi.Models.FortuneTeller", b =>
                 {
                     b.Property<int>("Id")
@@ -62,11 +142,35 @@ namespace FortuneTellerApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Birthmap")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("BirthmapPrice")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("Coffee")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("CoffeePrice")
+                        .HasColumnType("float");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("PlayingCard")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("PlayingCardPrice")
+                        .HasColumnType("float");
+
                     b.Property<double>("Rate")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("Tarot")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("TarotPrice")
                         .HasColumnType("float");
 
                     b.Property<int>("UserId")
@@ -75,6 +179,12 @@ namespace FortuneTellerApi.Migrations
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Water")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("WaterPrice")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 

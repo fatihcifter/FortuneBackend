@@ -15,6 +15,26 @@ namespace FortuneTellerApi.Models
         [Required]
         public string Base64Image { get; set; }
         [Required]
-        public double Rate { get; set; }
+        public double Rate { get; set; }    
+        [Required]
+        public bool Coffee { get; set; }
+        [Required]
+        public double CoffeePrice { get; set; }
+        [Required]
+        public bool Tarot { get; set; }
+        [Required]
+        public double TarotPrice { get; set; }
+        [Required]
+        public bool Water { get; set; }
+        [Required]
+        public double WaterPrice { get; set; }
+        [Required]
+        public bool Birthmap { get; set; }
+        [Required]
+        public double BirthmapPrice { get; set; }
+        [Required]
+        public bool PlayingCard { get; set; }
+        [Required]
+        public double PlayingCardPrice { get; set; }
     }
 }
