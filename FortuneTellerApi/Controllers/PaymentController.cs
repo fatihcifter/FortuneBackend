@@ -40,8 +40,8 @@ namespace FortuneTellerApi.Controllers
             Options options = new Options();
             if (userDetail.IsValid() && userRegisterAddress.IsValid() && userBillingAddress.IsValid())
             {                
-                options.ApiKey = "sandbox-LNsAPcs6bakEp4eghJigl58XWVGZo8uE";
-                options.SecretKey = "sandbox-MeQwha0c01OJ8qkihZflzgyVLjzFNoOH";
+                options.ApiKey = "sandboxKey"; // for testing
+                options.SecretKey = "sandboxSecretKey";// for testing
                 options.BaseUrl = "https://sandbox-api.iyzipay.com";
 
                 request.Locale = Locale.TR.ToString();
